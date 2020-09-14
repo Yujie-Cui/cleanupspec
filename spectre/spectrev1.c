@@ -61,7 +61,7 @@ uint8_t array1[160] = {
 uint8_t unused2[64];
 uint8_t array2[256 * 512] ;
 
-char * secret = "2he Magic Words are Squeamish Ossifrage.";
+char * secret = "The Magic Words are Squeamish Ossifrage.";
 
 uint8_t temp = 0; /* Used so compiler won’t optimize out victim_function() */
 //uint8_t temp_array3[128 * 1024] ;

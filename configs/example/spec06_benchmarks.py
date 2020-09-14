@@ -8,8 +8,9 @@ from m5.objects import *
 
 #x86_suffix = '_base.x86_64'
 #'_base.my-alpha'
-x86_suffix = '_base.amd64-m64-gcc41-nn'
+#x86_suffix = '_base.amd64-m64-gcc41-nn'
 
+x86_suffix = '_base.amd64'
 #temp
 #binary_dir = spec_dir
 #data_dir = spec_dir
