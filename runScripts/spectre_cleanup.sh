@@ -10,15 +10,14 @@
 
 ########################################
 
-RUN_CONFIG="Test_Spectre"
-SPECTRE_DIR="../spectre"
-BENCHMARK="spectre"
+ATTACK_CODE_DIR="../attack_code"
+BENCHMARK="hello"
 
 ############## GET SCHEME AND FOLDER ####################################################
  
 ARGC=$# # Get number of arguments excluding arg0.
 if [[ "$ARGC" != 1 ]]; then # Bad number of arguments.
-    echo "EXAMPLE: ./run_spectre.sh [UnsafeBaseline OR Cleanup_FOR_L1L2]"
+    echo "EXAMPLE: ./run_cleanup.sh [UnsafeBaseline OR Cleanup_FOR_L1L2]"
     echo ""
     exit
 fi
@@ -38,7 +37,7 @@ fi
 ##################################################################
 # Outdir & Rundir
 
-OUTPUT_DIR=$SPECTRE_DIR/results/$RUN_CONFIG/$SCHEME_CLEANUPCACHE
+OUTPUT_DIR=$GEM5_PATH/results/cleanupSpec/$SCHEME_CLEANUPCACHE
 
 echo "output directory: " $OUTPUT_DIR
 
@@ -48,7 +47,7 @@ then
 fi
 mkdir -p $OUTPUT_DIR
 
-RUN_DIR=$SPECTRE_DIR
+RUN_DIR=$ATTACK_CODE_DIR
 SCRIPT_OUT=$OUTPUT_DIR/runscript.log  # File log for this script's stdout henceforth
 
 ################## REPORT SCRIPT CONFIGURATION ###################
@@ -81,7 +80,7 @@ echo "" | tee -a $SCRIPT_OUT
 # --debug-flags=RubySlicc,RubyPort,Fetch,Decode,Rename,IEW,Activity \
 $GEM5_PATH/build/X86_MESI_Two_Level/gem5.opt \
               --debug-flags=RubyReadLatency --debug-start=12000000000           \
-              --outdir=$OUTPUT_DIR $GEM5_PATH/configs/example/spectre_config.py    \
+              --outdir=$OUTPUT_DIR	$GEM5_PATH/configs/example/attack_code_config.py    \
               --benchmark=$BENCHMARK  \
               --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err \
 			  --benchmark_stdout=$OUTPUT_DIR/$BENCHMARK.out \

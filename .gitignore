@@ -1,3 +1,5 @@
+output
+results
 spectre/results
 spectre/*.log
 build
@@ -5,11 +7,16 @@ parser.out
 parsetab.py
 cscope.files
 cscope.out
+.*
 *.pyc
 *~
 .*.swp
 .*.swo
+test_func
 m5out
+spectre/
+*.log
+.vscode
 /src/doxygen
 /ext/dramsim2/DRAMSim2
 /ext/mcpat/regression/*/*.out

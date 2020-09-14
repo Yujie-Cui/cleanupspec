@@ -627,6 +627,7 @@ class Packet : public Printable
     void setL1Hit()
     {
     // assert(isSpec());
+
         assert(!flags.isSet(L1_HIT));
         flags.set(L1_HIT);
     }

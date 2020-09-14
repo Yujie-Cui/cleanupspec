@@ -1,18 +1,20 @@
 #!/bin/bash
-export GEM5_PATH=$(pwd)/..
+
+export workDir=/home/cuiyujie/workspace/cleanupspec
+export GEM5_PATH=/home/cuiyujie/workspace/cleanupspec
 export SPEC_PATH=/home/cuiyujie/workspace/benchmarks/spec2006
 export CKPT_PATH=/home/cuiyujie/workspace/gem5_ckpt
 echo $GEM5_PATH
 
 
-export workDir=/home/cuiyujie/workspace/cleanupspec
 
 
 export result=$workDir/results
-export resultInvisi=$workDir/results/invisiSpec
-export resultCleanup=$workDir/results/cleanupSpec
-export run=$workDir/exp_script/mycode.sh
-export debug=$workDir/exp_script/mycode_debug.sh
+export scripts=$workDir/runScripts
+export result_invisi=$workDir/results/invisiSpec
+export result_cleanup=$workDir/results/cleanupSpec
+export run=$workDir/runScripts/spectre_cleanup.sh
+export debug=$workDir/runScripts/debug_spectre_cleanup.sh
 export info=$workDir/info.log
 export cpu=$workDir/src/cpu/o3/cpu.cc
 export fetch=$workDir/src/cpu/o3/fetch_impl.hh

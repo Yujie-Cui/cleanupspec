@@ -10,9 +10,10 @@
 
 ########################################
 
-RUN_CONFIG="Test_Spectre"
-SPECTRE_DIR="../spectre"
-BENCHMARK="spectre"
+ATTACK_CODE_DIR="../attack_code"
+BENCHMARK="hello"
+
+
 
 ############## GET SCHEME AND FOLDER ####################################################
  
@@ -24,7 +25,7 @@ if [[ "$ARGC" != 1 ]]; then # Bad number of arguments.
 fi
  
 # Get command line input. We will need to check these.
-SCHEME_CLEANUPCACHE=$1
+SCHEME_INVISI=$1
 
 ############ GET PATH VARIABLE #############
 if [ -z ${GEM5_PATH+x} ];
@@ -38,7 +39,7 @@ fi
 ##################################################################
 # Outdir & Rundir
 
-OUTPUT_DIR=$SPECTRE_DIR/results/$RUN_CONFIG/$SCHEME_CLEANUPCACHE
+OUTPUT_DIR=$GEM5_PATH/results/invisiSpec_debug/$SCHEME_INVISI
 
 echo "output directory: " $OUTPUT_DIR
 
@@ -48,7 +49,7 @@ then
 fi
 mkdir -p $OUTPUT_DIR
 
-RUN_DIR=$SPECTRE_DIR
+RUN_DIR=$ATTACK_CODE_DIR
 SCRIPT_OUT=$OUTPUT_DIR/runscript.log  # File log for this script's stdout henceforth
 
 ################## REPORT SCRIPT CONFIGURATION ###################
@@ -79,15 +80,16 @@ echo "" | tee -a $SCRIPT_OUT
 # Actually launch gem5!
 # --benchmark=$BENCHMARK --benchmark_stdout=$OUTPUT_DIR/$BENCHMARK.out \
 # --debug-flags=RubySlicc,RubyPort,Fetch,Decode,Rename,IEW,Activity \
-$GEM5_PATH/build/X86_MESI_Two_Level/gem5.opt \
-              --debug-flags=RubyReadLatency --debug-start=12000000000           \
-              --outdir=$OUTPUT_DIR $GEM5_PATH/configs/example/spectre_config.py    \
+              #--benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err \
+			  #--benchmark_stdout=$OUTPUT_DIR/$BENCHMARK.out \
+gdb --args \
+$GEM5_PATH/build/X86_MESI_Two_Level/gem5.debug \
+              --debug-flags=O3CPUAll --debug-start=0   --debug-break=430000       \
+              --outdir=$OUTPUT_DIR $GEM5_PATH/configs/example/attack_code_config.py    \
               --benchmark=$BENCHMARK  \
-              --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err \
-			  --benchmark_stdout=$OUTPUT_DIR/$BENCHMARK.out \
               --num-cpus=1 --mem-size=4GB \
               --l1d_assoc=8 --l2_assoc=16 --l1i_assoc=4 \
-              --cpu-type=DerivO3CPU  --scheme_invisispec=UnsafeBaseline --needsTSO=0 \
-              --scheme_cleanupcache=$SCHEME_CLEANUPCACHE \
+              --cpu-type=DerivO3CPU  --scheme_invisispec=$SCHEME_INVISI --needsTSO=0 \
+              --scheme_cleanupcache=UnsafeBaseline \
               --num-dirs=1 --ruby --prog-interval=0.003MHz     \
-              --network=simple --topology=Mesh_XY --mesh-rows=1 | tee -a $SCRIPT_OUT
+              --network=simple --topology=Mesh_XY --mesh-rows=1 
