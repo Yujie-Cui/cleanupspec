@@ -7,6 +7,8 @@ parser.out
 parsetab.py
 cscope.files
 cscope.out
+*.bak
+*.html
 *.pyc
 *~
 .*.swp
