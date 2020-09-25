@@ -212,6 +212,7 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
     // to the upper level CPU, and not this FullO3CPU.
 
     // Set up Pointers to the activeThreads list for each stage
+    DPRINTF(O3CPU, "setActiveThreads\n");
     fetch.setActiveThreads(&activeThreads);
     decode.setActiveThreads(&activeThreads);
     rename.setActiveThreads(&activeThreads);
@@ -219,6 +220,7 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
     commit.setActiveThreads(&activeThreads);
 
     // Give each of the stages the time buffer they will use.
+    DPRINTF(O3CPU, "setTimeBuffer\n");
     fetch.setTimeBuffer(&timeBuffer);
     decode.setTimeBuffer(&timeBuffer);
     rename.setTimeBuffer(&timeBuffer);
@@ -419,6 +421,7 @@ FullO3CPU<Impl>::FullO3CPU(DerivO3CPUParams *params)
 template <class Impl>
 FullO3CPU<Impl>::~FullO3CPU()
 {
+
 }
 
 template <class Impl>
@@ -573,7 +576,7 @@ FullO3CPU<Impl>::tick()
 //    activity = false;
 
     //Tick each of the stages
-    fetch.tick();
+    fetch.tick();  
 
     decode.tick();
 
@@ -597,7 +600,7 @@ FullO3CPU<Impl>::tick()
     if (removeInstsThisCycle) {
         cleanUpRemovedInsts();
     }
-
+    DPRINTF(O3CPU, "_status=%d,clockEdge(Cycles(1)=%i,\n",_status,clockEdge(Cycles(1)));
     if (!tickEvent.scheduled()) {
         if (_status == SwitchedOut) {
             DPRINTF(O3CPU, "Switched out!\n");
@@ -653,6 +656,7 @@ template <class Impl>
 void
 FullO3CPU<Impl>::startup()
 {
+    DPRINTF(O3CPU, "FullO3CPU.startup() setActiveThreads\n");
     BaseCPU::startup();
     for (int tid = 0; tid < numThreads; ++tid)
         isa[tid]->startup(threadContexts[tid]);
@@ -1779,7 +1783,7 @@ FullO3CPU<Impl>::wakeCPU()
     }
 
     schedule(tickEvent, clockEdge());
-}
+}   
 
 template <class Impl>
 void

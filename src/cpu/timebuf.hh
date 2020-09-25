@@ -177,7 +177,7 @@ class TimeBuffer
 
     void
     advance()
-    {
+    {   
         if (++base >= size)
             base = 0;
 

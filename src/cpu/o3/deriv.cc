@@ -54,7 +54,7 @@ DerivO3CPUParams::create()
         actual_num_threads =
             (numThreads >= workload.size()) ? numThreads : workload.size();
     }
-
+   
     numThreads = actual_num_threads;
 
     // Default smtFetchPolicy to "RoundRobin", if necessary.

@@ -1,7 +1,7 @@
 test_func
 output
 spectre/results
-spectre/*.log
+spectre
 build
 parser.out
 parsetab.py
@@ -10,6 +10,7 @@ cscope.out
 *.bak
 *.html
 *.pyc
+*.log
 *~
 .*.swp
 .*.swo

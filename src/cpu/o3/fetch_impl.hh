@@ -930,7 +930,7 @@ DefaultFetch<Impl>::tick()
 
     if (status_change) {
         // Change the fetch stage status if there was a status change.
-        _status = updateFetchStatus();
+        _status = updateFetchStatus();   //deactive or active
     }
 
     // Issue the next I-cache request if possible.

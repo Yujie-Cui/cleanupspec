@@ -353,7 +353,7 @@ class DefaultFetch
     /** Align a PC to the start of a fetch buffer block. */
     Addr fetchBufferAlignPC(Addr addr)
     {
-        return (addr & ~(fetchBufferMask));
+        return (addr & ~(fetchBufferMask));//fetchBufferMask = fetchBufferSize - 1
     }
 
     /** The decoder. */
