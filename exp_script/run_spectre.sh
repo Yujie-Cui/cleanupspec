@@ -79,7 +79,7 @@ echo "" | tee -a $SCRIPT_OUT
 # Actually launch gem5!
 # --debug-flags=RubySlicc,RubyPort,Fetch,Decode,Rename,IEW,Activity \
 $GEM5_PATH/build/X86_MESI_Two_Level/gem5.opt \
-              --debug-flags=Exec  \
+              --debug-flags=O3CPUAll  \
               --debug-start=0           \
               --outdir=$OUTPUT_DIR $GEM5_PATH/configs/example/spectre_config.py    \
               --benchmark=$BENCHMARK --benchmark_stdout=$OUTPUT_DIR/$BENCHMARK.out \
