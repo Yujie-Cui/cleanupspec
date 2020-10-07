@@ -64,6 +64,7 @@
 #include "debug/Drain.hh"
 #include "debug/ExecFaulting.hh"
 #include "debug/O3PipeView.hh"
+#include "debug/LSQUnit.hh" //add
 #include "params/DerivO3CPU.hh"
 #include "sim/faults.hh"
 #include "sim/full_system.hh"
@@ -1045,6 +1046,7 @@ DefaultCommit<Impl>::commitInsts()
         if (head_inst->isSquashed()) {
 
           //[CLEANUPCACHE] - TODO
+           DPRINTF(LSQUnit, "cannot commit\n");
           if(head_inst->isLoad() && head_inst->isSquashTouched() && (!head_inst->isRemovedFromSquashBuf()) ){
             DPRINTF(Commit, "Can't commit (as Removed from SquashBuffer :%d) head instruction PC:%s "
                     "[tid:%i] [sn:%lli].\n",

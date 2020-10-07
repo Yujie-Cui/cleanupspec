@@ -106,13 +106,12 @@ CPUProgressEvent::process()
 
 #ifndef NDEBUG
     double ipc = double(temp - lastNumInst) / (_interval / cpu->clockPeriod());
-
     DPRINTFN("%s progress event, total committed:%i, progress insts committed: "
              "%lli, IPC: %0.8d\n", cpu->name(), temp, temp - lastNumInst,
              ipc);
     ipc = 0.0;
 #else
-    cprintf("%lli: %s progress event, total committed:%i, progress insts "
+    cprintf("%lli: %s why there progress event, total committed:%i, progress insts "
             "committed: %lli\n", curTick(), cpu->name(), temp,
             temp - lastNumInst);
 #endif

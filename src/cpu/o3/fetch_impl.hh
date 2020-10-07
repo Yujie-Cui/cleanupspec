@@ -946,6 +946,7 @@ DefaultFetch<Impl>::tick()
     unsigned available_insts = 0;
 
     for (auto tid : *activeThreads) {
+         DPRINTF(Fetch, "stalls[tid].decode = %d\n\n",stalls[tid].decode);
         if (!stalls[tid].decode) {
             available_insts += fetchQueue[tid].size();
         }
@@ -1168,6 +1169,8 @@ DefaultFetch<Impl>::fetch(bool &status_change)
     }
 
     DPRINTF(Fetch, "Attempting to fetch from [tid:%i]\n", tid);
+    
+    DPRINTF(Fetch, "fetchStatus[tid]=%#x\n",fetchStatus[tid]);
 
     // The current PC.
     TheISA::PCState thisPC = pc[tid];
@@ -1176,7 +1179,8 @@ DefaultFetch<Impl>::fetch(bool &status_change)
     Addr fetchAddr = (thisPC.instAddr() + pcOffset) & BaseCPU::PCMask;
 
     bool inRom = isRomMicroPC(thisPC.microPC());
-
+    DPRINTF(Fetch, "[tid:%i]:pcOffset= %#x,\
+    fetchAddr=%#x,inRom=%d,\n ",tid, pcOffset,fetchAddr,inRom);
     // If returning from the delay of a cache miss, then update the status
     // to running, otherwise do the cache access.  Possibly move this up
     // to tick() function.
@@ -1188,6 +1192,7 @@ DefaultFetch<Impl>::fetch(bool &status_change)
     } else if (fetchStatus[tid] == Running) {
         // Align the fetch PC so its at the start of a fetch buffer segment.
         Addr fetchBufferBlockPC = fetchBufferAlignPC(fetchAddr);
+        DPRINTF(Fetch, "[tid:%i]:fetchBufferBlockPC= %#x.\n", tid, fetchBufferBlockPC);
 
         // If buffer is no longer valid or fetchAddr has moved to point
         // to the next cache block, AND we have no remaining ucode

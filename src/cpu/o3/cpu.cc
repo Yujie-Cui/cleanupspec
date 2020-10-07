@@ -589,7 +589,7 @@ FullO3CPU<Impl>::tick()
     // Now advance the time buffers
     timeBuffer.advance();
 
-    fetchQueue.advance();
+    fetchQueue.advance();  // ?
     decodeQueue.advance();
     renameQueue.advance();
     iewQueue.advance();
@@ -656,6 +656,7 @@ template <class Impl>
 void
 FullO3CPU<Impl>::startup()
 {
+     cprintf("FullO3CPU<Impl>::startup()-test\n");
     DPRINTF(O3CPU, "FullO3CPU.startup() setActiveThreads\n");
     BaseCPU::startup();
     for (int tid = 0; tid < numThreads; ++tid)

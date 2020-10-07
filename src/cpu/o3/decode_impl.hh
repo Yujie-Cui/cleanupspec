@@ -514,7 +514,7 @@ DefaultDecode<Impl>::checkSignalsAndUpdate(ThreadID tid)
 
         return true;
     }
-
+    
     if (checkStall(tid)) {
         return block(tid);
     }

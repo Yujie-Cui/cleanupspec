@@ -819,7 +819,7 @@ DefaultIEW<Impl>::checkSignalsAndUpdate(ThreadID tid)
     emptyRenameInsts(tid);
     wroteToTimeBuffer = true;
   }
-            
+  DPRINTF(IEW, "checkStall(tid)) =%d \n", checkStall(tid));     
   if (checkStall(tid)) {
     block(tid);
     dispatchStatus[tid] = Blocked;

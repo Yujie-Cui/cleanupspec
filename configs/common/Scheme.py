@@ -119,9 +119,10 @@ def scheme_config_cpu(cpu_cls, cpu_list, options):
             if len(options.scheme_invisispec)!=0:
                 cpu.simulateScheme = options.scheme_invisispec
             #####################################################            
-            #[CleanupCache]:
+            #[CleanupCache]://It works
             if options.cleanupLQExecd_on_Squash:
                 cpu.cleanupLQExecd_on_Squash = True;
+                # cpu.cleanupLQExecd_on_Squash = True;
             else:
                 cpu.cleanupLQExecd_on_Squash = False;
             if options.cleanupLQInflight_on_Squash:

@@ -1160,6 +1160,7 @@ template <class Impl>
 void
 LSQUnit<Impl>::commitLoads(InstSeqNum &youngest_inst)
 {
+   // cprintf("loads=%d\n",loads);
     assert(loads == 0 || loadQueue[loadHead]);
 
     while (loads != 0 && loadQueue[loadHead]->seqNum <= youngest_inst) {
@@ -1815,6 +1816,8 @@ template <class Impl>
 void
 LSQUnit<Impl>::squash(const InstSeqNum &squashed_num)
 {
+
+    //cprintf("LSQUnit<Impl>::squash-test\n");
     DPRINTF(LSQUnit, "Squashing until [sn:%lli]!"
             "(Loads:%i Stores:%i)\n", squashed_num, loads, stores);
 
@@ -1829,7 +1832,7 @@ LSQUnit<Impl>::squash(const InstSeqNum &squashed_num)
       assert(loadsInflightCleanupIssued ==0);
       assert(loadsExecutedCleanupIssued ==0);
       assert(cleanupAcksReceived == 0);    
-      assert(skippedCleanupReqs == 0);
+      assert(skippedCleanupReqs == 0);                          
 
       lsqCleanupSquashStartCycle = cpu->curCycle();
       cleanup_l1hits_exec_start = lsqSquashedLoadsExec_L1Hits.value();
@@ -1844,8 +1847,61 @@ LSQUnit<Impl>::squash(const InstSeqNum &squashed_num)
 
     DPRINTF(LSQUnit, "Squashing till [sn:%lli]: Currently squash_in_progress:%d, and squashfrom_seqnum:[sn:%lli]\n", squashed_num,squash_in_progress,squashfrom_seqnum);
 
-    if(cleanupLQExecd_on_Squash || cleanupLQInflight_on_Squash || cleanupL2Inv){
-      if(squash_in_progress){
+    //if( cleanupL2Inv){  //test-wrong
+
+     if(cleanupLQExecd_on_Squash || cleanupLQInflight_on_Squash || cleanupL2Inv){
+
+          // if(squash_in_progress){
+          //   assert(squashed_num <= squashfrom_seqnum);
+          // } else {
+          //   squash_in_progress = true;
+          // }
+
+       //  Regular Squash for Baseline:
+
+     // here is ok
+
+      // while (loads_to_squash != 0 && (loadQueue[load_idx]->seqNum > squashed_num)) {
+        
+      //   DPRINTF(LSQUnit,"Load Instruction PC %s squashed, "
+      //           "[sn:%lli]\n",
+      //           loadQueue[load_idx]->pcState(),
+      //           loadQueue[load_idx]->seqNum);
+
+      //   // Remove entry from Spec-Window Tracking Queue.
+      //   if(loadQueue[load_idx]->isLoadIssued()) {
+      //     loadQueue[load_idx]->calcSpecWindowCycles(specWindowLoadsHist,spectreWindowLoadsHist,cpu->curCycle());
+      //     removeSpecWindowQ(loadQueue[load_idx]);
+      //   }
+
+
+      //   if (isStalled() && load_idx == stallingLoadIdx) {
+      //     stalled = false;
+      //     stallingStoreIsn = 0;
+      //     stallingLoadIdx = 0;
+      //   }
+        
+      //   if (loadQueue[load_idx]->needPostFetch() &&
+      //       loadQueue[load_idx]->readyToExpose() &&
+      //       !loadQueue[load_idx]->isExposeSent()){
+      //     loadsToVLD --;
+      //   }
+        
+      //   // Clear the smart pointer to make sure it is decremented.    
+      //   loadQueue[load_idx]->setSquashed();
+      //   loadQueue[load_idx] = NULL;
+      //   --loads;
+      //   --loads_to_squash;
+
+      //   loadTail = load_idx;
+      //   decrLdIdx(load_idx);
+      //   ++lsqSquashedLoadsTot;
+      // }   
+
+
+    
+
+   if(squash_in_progress){
         assert(squashed_num <= squashfrom_seqnum);
       } else {
         squash_in_progress = true;
@@ -1858,7 +1914,7 @@ LSQUnit<Impl>::squash(const InstSeqNum &squashed_num)
       //Iterate through LSQ and squash, While there are loads to be squashed & not touched before.
       while ((loads_to_squash != 0) && (loadQueue[load_idx]->seqNum > squashed_num) ) {
 
-      
+        
         if(!loadQueue[load_idx]->isSquashTouched()){
 
           if(loadQueue[load_idx]->isLoadIssued()) {
@@ -1906,7 +1962,7 @@ LSQUnit<Impl>::squash(const InstSeqNum &squashed_num)
       squashbuffer_used = false;
       squashbuffer_empty = false;
       squashbuffer_emptying_started = false; 
-
+      DPRINTF(LSQUnit,"stop here\n");  // why only one
       if(issueBufferedCleanupReqs()){
         DPRINTF(LSQUnit,"Buffered CleanupReqs All Sent to Cache For Blocking Squash on [sn:%lli]\n",squashed_num);
       } else {
@@ -1920,7 +1976,109 @@ LSQUnit<Impl>::squash(const InstSeqNum &squashed_num)
       } else{
         DPRINTF(LSQUnit,"LoadQ Will Get Cleared When Blocking CleanupAcks Received for Squash on [sn:%lli]\n",squashed_num);
       }         
-    } else {
+
+
+      // if(squash_in_progress){
+      //   assert(squashed_num <= squashfrom_seqnum);
+      // } else {
+      //   squash_in_progress = true;
+      // }
+    
+    //   DPRINTF(LSQUnit, "For squash till [sn:%lli] SkippedCleanupReqs = %d and squash_in_progress:%d\n",squashed_num, skippedCleanupReqs,squash_in_progress);
+     
+
+      
+    //   //Iterate through LSQ and squash, While there are loads to be squashed & not touched before.
+    //   while ((loads_to_squash != 0) && (loadQueue[load_idx]->seqNum > squashed_num) ) {
+
+      
+    //  //   if(!loadQueue[load_idx]->isSquashTouched()){
+
+    //       if(loadQueue[load_idx]->isLoadIssued()) {
+    //         loadQueue[load_idx]->calcSpecWindowCycles(specWindowLoadsHist,spectreWindowLoadsHist,cpu->curCycle());
+    //         removeSpecWindowQ(loadQueue[load_idx]);
+    //       }
+
+    //       DPRINTF(LSQUnit,"Squashing & Buffering Unsafe Load Instruction PC %s, "
+    //               "[sn:%lli], Addr:%#x, LoadIssued:%d, LoadReturned:%d\n",
+    //               loadQueue[load_idx]->pcState(),
+    //               loadQueue[load_idx]->seqNum,
+    //               loadQueue[load_idx]->physEffAddrLow,
+    //               loadQueue[load_idx]->isLoadIssued(),
+    //               loadQueue[load_idx]->isLoadReturned());
+
+    //       if (isStalled() && load_idx == stallingLoadIdx) {
+    //         stalled = false;
+    //         stallingStoreIsn = 0;
+    //         stallingLoadIdx = 0;
+    //       }
+
+    //       if (loadQueue[load_idx]->needPostFetch() &&
+    //           loadQueue[load_idx]->readyToExpose() &&
+    //           !loadQueue[load_idx]->isExposeSent()){
+    //         loadsToVLD --;
+    //       }
+
+
+    //       //TODO: Check if setSquashed causes commit to do something weird
+    //       loadQueue[load_idx]->setSquashed();
+    //   //    loadQueue[load_idx]->isSquashTouched(true); //Touched by a Squash
+
+    //       //Push into a buffer
+    //      loadQueue[load_idx]->setSquashBuffered(true); //Pushed into a virtual queue for squashed loads.
+
+    //    // }      
+
+    //     //add
+    //        loadQueue[load_idx] = NULL;
+    //       --loads;
+    //        loadTail = load_idx;
+
+    //     --loads_to_squash;
+        
+    //     decrLdIdx(load_idx);
+
+    //     //add
+    //     ++lsqSquashedLoadsTot;
+        
+    //   }
+
+    //   //Update squashed from where?
+    //   // squashfrom_seqnum = squashed_num;
+    
+    //   //Check if All Reqs Sent from Buffered Queue
+    //   squashbuffer_used = false;
+    //   squashbuffer_empty = false;
+    //   squashbuffer_emptying_started = false; 
+
+      // if(issueBufferedCleanupReqs()){
+      //   DPRINTF(LSQUnit,"Buffered CleanupReqs All Sent to Cache For Blocking Squash on [sn:%lli]\n",squashed_num);
+      // } else {
+      //   DPRINTF(LSQUnit,"Buffered CleanupReqs Waiting for ROB-Head to be required inst for Squash on [sn:%lli]\n",squashed_num);
+      // }
+    
+      // //Wait until all Acks Received & Clear LoadQ
+    
+      // if(clearLoadQueue()){
+      //   DPRINTF(LSQUnit,"LoadQ Finally Cleared For Blocking Squash on [sn:%lli]\n",squashed_num);
+      // } else{
+      //   DPRINTF(LSQUnit,"LoadQ Will Get Cleared When Blocking CleanupAcks Received for Squash on [sn:%lli]\n",squashed_num);
+      // }         
+     
+
+     
+
+
+
+
+
+
+
+
+
+
+
+    } else { // start else
 
       //Regular Squash for Baseline:
       while (loads != 0 && (loadQueue[load_idx]->seqNum > squashed_num)) {
@@ -1958,7 +2116,7 @@ LSQUnit<Impl>::squash(const InstSeqNum &squashed_num)
         decrLdIdx(load_idx);
         ++lsqSquashedLoadsTot;
       }      
-    }
+    } // end if-else
     
     if (memDepViolator && squashed_num < memDepViolator->seqNum) {
       memDepViolator = NULL;
@@ -2380,7 +2538,7 @@ LSQUnit<Impl>::issueBufferedCleanupReqs()
   }
     
   // Check if squashfrom_seq == (ROB-done +1), if yes then proceed. Else, return false;
-  if( (iewStage->getDoneSeqNumCommit(lsqID) < (squashfrom_seqnum -1)) && (iewStage->getDoneSeqNumCommit(lsqID) > 0) ){ 
+  if( ((iewStage->getDoneSeqNumCommit(lsqID)+1) < (squashfrom_seqnum )) && (iewStage->getDoneSeqNumCommit(lsqID) > 0) ){ 
     DPRINTF(LSQUnit,"**Squash Buffer Waiting for Done Seq Num : %lli to reach one before Squash Head : %lli.\n", \
             iewStage->getDoneSeqNumCommit(lsqID), squashfrom_seqnum);
     return false;

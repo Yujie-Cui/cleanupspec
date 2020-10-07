@@ -880,6 +880,7 @@ DefaultRename<Impl>::block(ThreadID tid)
         // If resumeUnblocking is set, we unblocked during the squash,
         // but now we're have unblocking status. We need to tell earlier
         // stages to block.
+        
         if (resumeUnblocking || renameStatus[tid] != Unblocking) {
             toDecode->renameBlock[tid] = true;
             toDecode->renameUnblock[tid] = false;
