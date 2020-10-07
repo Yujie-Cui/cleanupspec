@@ -77,15 +77,17 @@ echo "" | tee -a $SCRIPT_OUT
 echo "" | tee -a $SCRIPT_OUT
 
 # Actually launch gem5!
+# --benchmark=$BENCHMARK --benchmark_stdout=$OUTPUT_DIR/$BENCHMARK.out \
 # --debug-flags=RubySlicc,RubyPort,Fetch,Decode,Rename,IEW,Activity \
 $GEM5_PATH/build/X86_MESI_Two_Level/gem5.opt \
               --debug-flags=RubyReadLatency --debug-start=12000000000           \
               --outdir=$OUTPUT_DIR $GEM5_PATH/configs/example/spectre_config.py    \
-              --benchmark=$BENCHMARK --benchmark_stdout=$OUTPUT_DIR/$BENCHMARK.out \
+              --benchmark=$BENCHMARK  \
               --benchmark_stderr=$OUTPUT_DIR/$BENCHMARK.err \
+			  --benchmark_stdout=$OUTPUT_DIR/$BENCHMARK.out \
               --num-cpus=1 --mem-size=4GB \
               --l1d_assoc=8 --l2_assoc=16 --l1i_assoc=4 \
               --cpu-type=DerivO3CPU  --scheme_invisispec=UnsafeBaseline --needsTSO=0 \
               --scheme_cleanupcache=$SCHEME_CLEANUPCACHE \
-              --num-dirs=1 --ruby --maxinsts=100000000 --prog-interval=0.003MHz     \
+              --num-dirs=1 --ruby --prog-interval=0.003MHz     \
               --network=simple --topology=Mesh_XY --mesh-rows=1 | tee -a $SCRIPT_OUT
