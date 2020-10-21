@@ -1,5 +1,5 @@
 output
-result
+results
 spectre/results
 spectre/*.log
 build
