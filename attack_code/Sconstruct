@@ -1,0 +1,10 @@
+import os
+env = Environment(CC = 'gcc')
+#'-std=c99',
+env.Append(CCFLAGS = [ '-Wall', '-g'])
+# for item in env.Dictionary():
+#         print(item, env[item])
+
+# libPath='/home/cuiyujie/bin/cLib/cSharedLib'
+# env.Program('learnAsm.c',LIBS=['my_func'],LIBPATH=libPath)
+env.Program('hello','program.c')
